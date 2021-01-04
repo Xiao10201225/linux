@@ -1,0 +1,80 @@
+fdisk  /dev/sdb
+n
+p
+1
+回车
++8G
+n
+p
+2
+回车
++8G
+wq
+fdisk  /dev/sdc
+n
+p
+1
+回车
++8G
+n
+p
+2
+回车
++8G
+wq
+pvcreate  /dev/sdb1
+pvcreate  /dev/sdb2
+pvcreate  /dev/sdc1
+pvscan
+vgcreate  vg  /dev/sdb1 /dev/sdb2   /dev/sdc1
+lvcreate  -L  20G  -n  你的名字拼音   vg
+mkfs  -t  ext4  /dev/vg/你的名字拼音
+cd  /
+mkdir  /a
+mkfs.ext4  /dev/vg/你名字拼音
+vim  /etc/fstab
+/dev/vg/你名字拼音
+   /a  xfs  defaults   1   1
+Esc     ：wq
+mount  -a
+df -h
+pvcreate  /dev/sdc2
+vgextend  vg  /dev/sdc2
+lvextend  -L  +8G     /dev/vg/名拼
+df -h
+
+
+
+
+rpm  -q  firewalld
+rpm  -q  firefox
+rpm  -q  httpd
+缺哪个下那个
+{yum clean all
+yum  install  (缺的)  -y}
+systemctl  start  httpd
+systemctl  enable  httpd
+systemctl  start  firewalld
+firewall-cmd  --list-all
+firewall-cmd --permanent --add-service=http
+firewall-cmd  --reload
+firewall-cmd  --list-all
+setenforce  0
+getenforce  0
+vim  /etc/httpd/conf/httpd.conf (记住/var/www/html/index.html)
+:wq
+vim  /var/www/html/index.html
+I(index.html
+<html>
+<head>
+<title> apache </title>
+</head>
+<body>
+<center>
+<h1> welcome to myweb </h1>
+</center>
+</body>
+</html>)
+:wq
+ifconfig
+找IP 记住 打开火狐 输入IP 
